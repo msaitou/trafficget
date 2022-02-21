@@ -10,10 +10,18 @@ async function start(mode) {
   return new Promise(async (resolve, reject) => {
     // db
     let recs = await db("life_util", "find", {});
+    let fileList = fs.readdirSync(conf.traffic.path);
+
     // ファイル名を作成
     for (let i = 0; i < recs.length; i++) {
+      // ファイル名の先頭が、コードから始まってるやつは先に消す。
+      let oldFile = fileList.filter((f) => f.indexOf(recs[i].code) === 0)[0];
+      if (oldFile) {
+        logger.info(oldFile);
+        fs.unlinkSync(`${conf.traffic.path}/${oldFile}`);
+      }
       let abFilePath = `${conf.traffic.path}/${recs[i].disp_mess}`;
-      fs.writeFileSync(abFilePath, '');
+      fs.writeFileSync(abFilePath, "");
     }
     logger.info(33);
     resolve(true);
