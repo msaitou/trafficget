@@ -6,7 +6,10 @@ logger.info(process.argv);
 const db = require("./initter.js").db;
 const fs = require("fs");
 const conf = require("config");
-async function start(mode) {
+const dateFormat = import("dateformat");
+// import dateFormat from "dateformat";
+
+async function start() {
   return new Promise(async (resolve, reject) => {
     // db
     let recs = await db("life_util", "find", {});
@@ -20,7 +23,10 @@ async function start(mode) {
         logger.info(oldFile);
         fs.unlinkSync(`${conf.traffic.path}/${oldFile}`);
       }
-      let abFilePath = `${conf.traffic.path}/${recs[i].disp_mess}`;
+      let modDate = new Date(recs[i].date);
+      let strModDate = (await dateFormat).default(modDate, "mmdd h:MM"); // returns 'Tuesday, March 16th, 2021, 11:32:08 PM'
+      let fileName = recs[i].disp_mess;
+      let abFilePath = `${conf.traffic.path}/${fileName} ${strModDate}`;
       fs.writeFileSync(abFilePath, "");
     }
     logger.info(33);

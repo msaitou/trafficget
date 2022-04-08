@@ -58,7 +58,7 @@ const thisLog = () => {
   log.configure({
     appenders: {
       out: { type: "stdout" },
-      app: { type: "dateFile", filename: "log/a.log", pattern: ".yyyyMMdd", keepFileExt: true },
+      app: { type: "dateFile", filename: "log/a.log", pattern: "yyyyMMdd", keepFileExt: true },
     },
     categories: { default: { appenders: ["out", "app"], level: "all" } },
   });
